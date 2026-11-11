@@ -37,7 +37,6 @@ details{margin-top:10px}summary{cursor:pointer;font-weight:600;color:var(--blue)
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 </style></head><body><main>
 <h1>Suhu dan Kalor: Coba Sendiri</h1>
-<p class="sub">Geser, tekan, dan lihat apa yang berubah. Satu halaman satu soal, urut dari nomor terkecil.</p>
 <nav id="nv"></nav><div id="ms"></div></main>
 <div class="pg"><div><button id="pv">Sebelumnya</button><span id="pc"></span><button id="nx">Berikutnya</button></div></div>
 <script>
@@ -51,23 +50,23 @@ const anims=[];(function L(){anims.forEach(f=>f());requestAnimationFrame(L)})();
 const F=x=>Math.round(x).toLocaleString('id-ID');
 const BT=(id,t,on)=>`<button id="${id}"${on?' class="on"':''}>${t}</button>`;
 const S=[
-{n:1,t:`Suhu datar saat es dipanasi`,tag:`Perubahan wujud, OSN Final 2025 no. 41 (grafik asli tidak ada di PDF, di sini dipakai pola grafik umum)`,
-k:`Es yang dipanasi tidak naik suhunya terus-menerus. Ada tahap di mana kalor tetap masuk tapi suhu diam di 0 °C. Itu tahap es berubah jadi air: kalor dipakai untuk mengubah wujud, bukan untuk menaikkan suhu.`,
+{n:1,t:`Suhu datar saat es dipanasi`,tag:`Perubahan wujud, OSN Final 2025 no. 41`,
+k:`Es yang dipanasi tidak naik suhunya terus-menerus. Ada tahap di mana kalor tetap masuk tapi suhu diam di 0 °C saat es berubah jadi air. Jadi kalor dipakai untuk mengubah wujud.`,
 q:`Balok es 1 kg dipanaskan. Grafik suhunya naik, lalu datar di 0 °C, lalu naik lagi. Apa yang terjadi pada es saat suhu datar di 0 °C? A. es mencair B. es tetap membeku C. es terkondensasi D. es menyublim`,
 c:G(1,140)+C('p1','Kalor yang diberikan (kal)',0,190000,5000,50000)+O('p1o'),
 a:`Jawaban <b>A</b>. Suhu datar di 0 °C artinya es sedang melebur (mencair). B salah karena es terus menerima kalor. C itu gas jadi cair, D itu padat jadi gas.`,
 r:`1. Baca grafik: naik, datar, naik.\n2. Bagian datar: kalor masuk, suhu tidak berubah.\n3. 0 °C adalah titik lebur es, jadi yang terjadi padat jadi cair.\nBagian datar: Q = m × L (L lebur es = 80 kal/g)\nBagian miring: Q = m × c × ΔT\nAngka di gambar (es 1 kg mulai −20 °C) hanya ilustrasi, bukan dari soal.`},
 {n:4,t:`Konversi skala suhu`,tag:`Skala suhu, OSN Kabupaten 2025 no. 60`,
-k:`Semua skala suhu berpatokan pada titik beku dan titik didih air. Celsius 0 sampai 100, Reamur 0 sampai 80, Fahrenheit 32 sampai 212, Kelvin 273 sampai 373. Geser Celsius, tiga skala lain ikut naik dengan porsi yang sama.`,
+k:`Semua skala suhu berpatokan pada titik beku dan titik didih air. Celsius 0 sampai 100, Reamur 0 sampai 80, Fahrenheit 32 sampai 212, Kelvin 273 sampai 373.`,
 q:`Air 37 °C dinyatakan dalam Kelvin, Fahrenheit, dan Reamur menjadi? A. 98,6 K; 300 °F; 29,6 °R B. 310 K; 98,6 °F; 29,6 °R C. 310 K; 29,6 °F; 98,6 °R D. 29,60 K; 98,6 °F; 29,6 °R`,
 c:G(4,130)+C('p4','Suhu air (°C)',0,100,1,37)+`<div class="row">${BT('p4s','Pakai angka soal (37 °C)')}</div>`+O('p4o'),
 a:`Jawaban <b>B</b>: 310 K, 98,6 °F, 29,6 °R.`,
 r:`K = °C + 273 = 37 + 273 = 310 K\n°F = (9/5 × °C) + 32 = 66,6 + 32 = 98,6 °F\n°R = 4/5 × °C = 0,8 × 37 = 29,6 °R\nCek cepat: 37 °C itu suhu tubuh, dan suhu tubuh dalam °F memang 98,6.\nJebakan: lupa tambah 32, atau tertukar 4/5 dengan 5/4.`},
-{n:7,t:`Bimetal kuningan dan baja`,tag:`Pemuaian, OSN Provinsi 2025 isian no. 25 (gambar pilihan tidak ada di PDF, kunci sumber: X = C, Y = B)`,
+{n:7,t:`Bimetal kuningan dan baja`,tag:`Pemuaian, OSN Provinsi 2025 isian no. 25`,
 k:`Dua logam yang ditempel melengkung karena memuai tidak sama besar. Saat dipanaskan, kuningan (lebih mudah memuai) jadi lebih panjang dan ada di sisi luar, jadi keping melengkung ke arah baja. Saat didinginkan kebalikannya: kuningan menyusut lebih besar, keping melengkung ke arah kuningan.`,
 q:`Kuningan dan baja disatukan jadi bimetal, lalu suhunya diubah sama besar. Kuningan lebih mudah memuai daripada baja. Peristiwa pendinginan ditunjukkan huruf ...(X)... dan pemanasan huruf ...(Y)...`,
 c:G(7,130)+C('p7','Suhu keping (°C), normal dianggap 30',5,55,5,55)+O('p7o'),
-a:`Pendinginan <b>C</b>, pemanasan <b>B</b> (kunci dari sumber soal). Cocokkan dengan gambar aslinya: yang dipanaskan melengkung ke arah baja, yang didinginkan melengkung ke arah kuningan.`,
+a:`Pendinginan <b>C</b>, pemanasan <b>B</b> (kunci dari sumber soal). Yang dipanaskan melengkung ke arah baja, yang didinginkan melengkung ke arah kuningan.`,
 r:`1. Kuningan lebih mudah memuai, jadi perubahan panjangnya lebih besar.\n2. Dipanaskan: kuningan lebih panjang, di luar lengkungan, keping membengkok ke baja.\n3. Didinginkan: kuningan lebih pendek, di dalam lengkungan, keping membengkok ke kuningan.\nAturan: logam yang berubah lebih besar selalu di sisi luar saat memuai dan di sisi dalam saat menyusut.`},
 {n:8,t:`Ketel listrik: usaha dan suhu awal air`,tag:`Usaha dan kalor, OSN Semifinal 2025 uraian no. 2e–f`,
 k:`Energi listrik ketel berubah jadi kalor yang diserap air. Dua rumus nyambung di sini: W = P × t di sisi listrik, Q = m × c × ΔT di sisi air. Waktu harus dalam detik.`,
@@ -92,12 +91,12 @@ k:`Yang kita rasakan bukan suhu bendanya, tapi seberapa cepat kalor keluar dari 
 q:`Kayu: konduktivitas 0,2 W/m·K, kalor jenis 1700 J/kg·K. Besi: 80 W/m·K, 460 J/kg·K. Pada 20 °C besi terasa lebih dingin. Alasan yang tepat? A. kayu kalor jenisnya lebih besar B. besi konduktivitasnya lebih besar C. kalor mengalir tanpa dipengaruhi konduktivitas dan kalor jenis D. besi permukaannya lebih halus`,
 c:G(16,100)+C('p16','Lama tangan menempel (detik)',0,10,1,5)+O('p16o'),
 a:`Jawaban <b>B</b>. Konduktivitas besi 80 W/m·K, kayu 0,2 W/m·K. Besi 400 kali lebih cepat menghantar kalor dari tangan.`,
-r:`1. Tangan lebih hangat dari 20 °C, jadi kalor mengalir dari tangan ke benda.\n2. Makin besar konduktivitas, makin cepat kalor lepas dari tangan.\n3. 80 ÷ 0,2 = 400, besi menarik kalor 400 kali lebih cepat.\nBukan A: kalor jenis besar justru membuat benda susah berubah suhu.\nBukan D: halus atau kasar tidak menentukan konduktivitas.\nGambar memakai model sederhana: kalor lepas sebanding dengan konduktivitas × waktu.`},
-{n:22,t:`Arah gerak air saat dipanaskan`,tag:`Perpindahan kalor, OSN SD/MI 2023 no. 39 (gambar pilihan tidak ada di PDF)`,
+r:`1. Tangan lebih hangat dari 20 °C, jadi kalor mengalir dari tangan ke benda.\n2. Makin besar konduktivitas, makin cepat kalor lepas dari tangan.\n3. 80 ÷ 0,2 = 400, besi menarik kalor 400 kali lebih cepat.\nBukan A: kalor jenis besar justru membuat benda susah berubah suhu.\nBukan D: halus atau kasar tidak menentukan konduktivitas.\nKalor lepas sebanding dengan konduktivitas × waktu.`},
+{n:22,t:`Arah gerak air saat dipanaskan`,tag:`Perpindahan kalor, OSN SD/MI 2023 no. 39`,
 k:`Air yang dipanaskan bergerak melingkar. Air dekat api memanas, jadi lebih ringan dan naik. Air dingin yang lebih berat turun mengisi tempatnya. Zatnya yang bergerak membawa panas, jadi ini konveksi, bukan konduksi.`,
 q:`Wadah berisi air dipanaskan. Arah gerak air dan jenis perpindahan panas yang tepat? Pilihan A dan B menyebut konduksi, C dan D konveksi, beda di arah panah pada gambar.`,
 c:G(22,150)+C('p22','Besar api',0,5,1,3)+O('p22o'),
-a:`Jenisnya <b>konveksi</b>, jadi jawabannya C atau D. Pilih yang panahnya naik di atas api dan turun di sisi yang jauh dari api. Huruf pastinya tergantung gambar asli.`,
+a:`Jenisnya <b>konveksi</b>, jadi jawabannya C atau D. Pilih yang panahnya naik di atas api dan turun di sisi yang jauh dari api.`,
 r:`1. Air bergerak, bukan diam, jadi bukan konduksi.\n2. Dekat api: air memuai, massa jenis turun, naik.\n3. Jauh dari api: air lebih dingin dan berat, turun.\n4. Terbentuk aliran melingkar yang membawa panas ke seluruh air.`},
 {n:24,t:`Suhu saat mendidih dan mencair`,tag:`Perubahan wujud, OSN SD/MI 2021 Set 1 no. 63 dan KSN Set 2 no. 63`,
 k:`Selama zat berubah wujud, suhunya tidak naik dan tidak turun. Kalor dipakai untuk mengubah wujud. Berlaku untuk air mendidih di 100 °C dan es mencair di 0 °C.`,
@@ -105,11 +104,11 @@ q:`Soal 24: Budi memanaskan air sampai mendidih di 100 °C dan mengamati 2 menit
 c:G(24,135)+C('p24','Waktu pemanasan (menit)',0,10,1,7)+`<div class="row">${BT('p24a','Air mendidih (soal 24)',1)}${BT('p24b','Es mencair (soal 27)')}</div>`+O('p24o'),
 a:`Keduanya <b>B. tetap sama</b>: air mendidih tetap 100 °C, es mencair tetap 0 °C.`,
 r:`Air mendidih: kalor dipakai menguap (cair jadi gas), suhu tetap 100 °C\nEs mencair: kalor dipakai melebur (padat jadi cair), suhu tetap 0 °C\nPolanya sama, jadi jawabannya sama.\nJebakan: mengira dipanasi terus berarti suhu naik terus.`},
-{n:38,t:`Piringan berlubang dipanaskan`,tag:`Pemuaian, OSN SD/MI 2021 no. 55 (gambar pilihan tidak ada di PDF)`,
+{n:38,t:`Piringan berlubang dipanaskan`,tag:`Pemuaian, OSN SD/MI 2021 no. 55`,
 k:`Logam yang memuai membesar ke segala arah, seperti foto yang di-zoom. Jadi lubang di tengahnya ikut membesar, bukan mengecil. Bayangkan lubang itu juga berlapis logam yang ikut memuai.`,
 q:`Jika piringan logam berongga dipanaskan, pemuaian yang mungkin terjadi ditunjukkan oleh ... (pilihan A sampai D berupa gambar).`,
 c:G(38,140)+C('p38','Kenaikan suhu (°C)',0,300,25,150)+O('p38o'),
-a:`Pilih gambar di mana diameter luar <b>dan</b> diameter lubang sama-sama lebih besar dari semula. Huruf pastinya tergantung gambar asli.`,
+a:`Pilih gambar di mana diameter luar <b>dan</b> diameter lubang sama-sama lebih besar dari semula.`,
 r:`1. Pemuaian panjang: L = L0 × (1 + α × ΔT), berlaku ke semua ukuran.\n2. Diameter luar dan diameter lubang sama-sama dikali faktor yang sama.\n3. Jadi lubang membesar.\nJebakan: mengira logam memuai ke dalam sehingga lubang menyempit.`}
 ];
 const nv=$('nv'),ms=$('ms');
@@ -165,7 +164,7 @@ for(let i=0;i<14;i++){const t=ph+i*2*PI/14,c=Math.cos(t);g+=`<circle cx="${160-8
 $('a22').innerHTML=g})}
 /* 38 */
 bind('p38',d=>{const s=1+d/300*.5,R=50,r=18;
-$('a38').innerHTML=`<circle cx="160" cy="70" r="${R}" fill="none" stroke="var(--mut)" stroke-dasharray="4 3"/><circle cx="160" cy="70" r="${r}" fill="none" stroke="var(--mut)" stroke-dasharray="4 3"/><circle cx="160" cy="70" r="${R*s}" fill="var(--blue)" opacity=".7" stroke="var(--line)" stroke-width="2"/><circle cx="160" cy="70" r="${r*s}" fill="var(--soft)" stroke="var(--line)" stroke-width="2"/><text x="8" y="132" style="font-size:10px">garis putus-putus = ukuran awal (pembesaran digambar berlebihan)</text>`;
+$('a38').innerHTML=`<circle cx="160" cy="70" r="${R}" fill="none" stroke="var(--mut)" stroke-dasharray="4 3"/><circle cx="160" cy="70" r="${r}" fill="none" stroke="var(--mut)" stroke-dasharray="4 3"/><circle cx="160" cy="70" r="${R*s}" fill="var(--blue)" opacity=".7" stroke="var(--line)" stroke-width="2"/><circle cx="160" cy="70" r="${r*s}" fill="var(--soft)" stroke="var(--line)" stroke-width="2"/><text x="8" y="132" style="font-size:10px">garis putus-putus = ukuran awal</text>`;
 $('p38o').innerHTML=d?`Suhu naik ${d} °C: diameter luar <b>membesar</b> dan diameter lubang juga <b>membesar</b>, dengan faktor yang sama.`:`Belum dipanaskan: ukuran awal.`});
 /* pager */
 const secs=[...document.querySelectorAll('section')],ch=[...nv.children];let cur=0;
