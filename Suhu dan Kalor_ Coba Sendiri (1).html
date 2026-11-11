@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suhu dan Kalor: Coba Sendiri</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef5f3;--grid:#d3e3df;--card:#fff;--ink:#1d2b4a;--mut:#56627c;--line:#1d2b4a;--blue:#2f6fd0;--red:#d94a3d;--grn:#2e9b6a;--yel:#f2b632;--soft:#e6eefb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#121a2b;--grid:#1d2842;--card:#1a2339;--ink:#e8eefc;--mut:#9fb0d0;--line:#e8eefc;--blue:#6aa3ff;--red:#ff7d6e;--grn:#52d29b;--yel:#ffcf5c;--soft:#243050}}
+:root[data-theme=dark]{--bg:#121a2b;--grid:#1d2842;--card:#1a2339;--ink:#e8eefc;--mut:#9fb0d0;--line:#e8eefc;--blue:#6aa3ff;--red:#ff7d6e;--grn:#52d29b;--yel:#ffcf5c;--soft:#243050}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font:400 16px/1.55 Lexend,system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 14px 96px}
+h1{font-size:1.7rem;margin:8px 0 4px;line-height:1.2}.sub{color:var(--mut);margin:0 0 16px}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+nav a{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:2px 12px;color:var(--ink);font-weight:600;font-size:.9rem;cursor:pointer}
+nav a.on{background:var(--yel);color:#1d2b4a}
+section{display:none;background:var(--card);border:2px solid var(--line);border-radius:6px 18px 6px 18px;padding:16px;box-shadow:4px 4px 0 var(--line)}
+section.on{display:block}
+h2{font-size:1.15rem;margin:0 0 2px}.tag{color:var(--mut);font-size:.8rem;margin:0 0 8px}
+.k{background:var(--soft);border-left:5px solid var(--blue);padding:8px 10px;margin:8px 0;border-radius:0 8px 8px 0}
+.q{border:2px dashed var(--mut);border-radius:10px;padding:8px 10px;margin:8px 0;font-size:.92rem}.q b{display:block;margin-bottom:2px}
+svg{width:100%;height:auto;display:block;background:var(--soft);border-radius:10px}
+svg text{font-family:Lexend,sans-serif;fill:var(--ink);font-size:11px}
+label{display:block;font-weight:600;margin:10px 0 2px}
+input[type=range]{width:100%;accent-color:var(--blue);height:32px}
+.out{font-weight:600;background:var(--soft);border-radius:8px;padding:8px 10px;margin-top:6px}
+.row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+button{font:600 .9rem Lexend,sans-serif;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:6px 12px;cursor:pointer;min-height:40px}
+button.on{background:var(--yel);color:#1d2b4a}
+details{margin-top:10px}summary{cursor:pointer;font-weight:600;color:var(--blue)}details p{margin:6px 0 0}
+.good{color:var(--grn)}.bad{color:var(--red)}
+.ln{stroke:var(--line);stroke-width:2;fill:none}
+.fm{background:var(--soft);border-left:5px solid var(--grn);border-radius:0 8px 8px 0;padding:6px 10px;margin:6px 0;font:600 .95rem/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+.pg{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--bg);border-top:2px solid var(--line);padding:8px 14px calc(8px + env(safe-area-inset-bottom,0px))}
+.pg div{max-width:640px;margin:auto;display:flex;gap:8px;align-items:center}.pg button{flex:1}.pg span{flex:0 0 auto;font-weight:600;color:var(--mut);font-size:.85rem}.pg button:disabled{opacity:.35}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+</style></head><body><main>
+<h1>Suhu dan Kalor: Coba Sendiri</h1>
+<p class="sub">Geser, tekan, dan lihat apa yang berubah. Satu halaman satu soal, urut dari nomor terkecil.</p>
+<nav id="nv"></nav><div id="ms"></div></main>
+<div class="pg"><div><button id="pv">Sebelumnya</button><span id="pc"></span><button id="nx">Berikutnya</button></div></div>
+<script>
+const $=i=>document.getElementById(i),N=x=>String(+x.toFixed(2)).replace('.',','),PI=Math.PI;
+function bind(id,f){const r=$(id+'r');r.oninput=()=>{$(id+'v').textContent=N(+r.value);f(+r.value)};r.oninput()}
+const set=(id,v)=>{const r=$(id+'r');r.value=v;r.oninput()};
+const C=(id,l,mn,mx,st,v)=>`<label>${l}: <span id="${id}v"></span></label><input id="${id}r" type="range" min="${mn}" max="${mx}" step="${st}" value="${v}">`;
+const O=id=>`<div class="out" id="${id}"></div>`;
+const G=(n,h)=>`<svg viewBox="0 0 320 ${h}"><g id="a${n}"></g></svg>`;
+const anims=[];(function L(){anims.forEach(f=>f());requestAnimationFrame(L)})();
+const F=x=>Math.round(x).toLocaleString('id-ID');
+const BT=(id,t,on)=>`<button id="${id}"${on?' class="on"':''}>${t}</button>`;
+const S=[
+{n:1,t:`Suhu datar saat es dipanasi`,tag:`Perubahan wujud, OSN Final 2025 no. 41 (grafik asli tidak ada di PDF, di sini dipakai pola grafik umum)`,
+k:`Es yang dipanasi tidak naik suhunya terus-menerus. Ada tahap di mana kalor tetap masuk tapi suhu diam di 0 °C. Itu tahap es berubah jadi air: kalor dipakai untuk mengubah wujud, bukan untuk menaikkan suhu.`,
+q:`Balok es 1 kg dipanaskan. Grafik suhunya naik, lalu datar di 0 °C, lalu naik lagi. Apa yang terjadi pada es saat suhu datar di 0 °C? A. es mencair B. es tetap membeku C. es terkondensasi D. es menyublim`,
+c:G(1,140)+C('p1','Kalor yang diberikan (kal)',0,190000,5000,50000)+O('p1o'),
+a:`Jawaban <b>A</b>. Suhu datar di 0 °C artinya es sedang melebur (mencair). B salah karena es terus menerima kalor. C itu gas jadi cair, D itu padat jadi gas.`,
+r:`1. Baca grafik: naik, datar, naik.\n2. Bagian datar: kalor masuk, suhu tidak berubah.\n3. 0 °C adalah titik lebur es, jadi yang terjadi padat jadi cair.\nBagian datar: Q = m × L (L lebur es = 80 kal/g)\nBagian miring: Q = m × c × ΔT\nAngka di gambar (es 1 kg mulai −20 °C) hanya ilustrasi, bukan dari soal.`},
+{n:4,t:`Konversi skala suhu`,tag:`Skala suhu, OSN Kabupaten 2025 no. 60`,
+k:`Semua skala suhu berpatokan pada titik beku dan titik didih air. Celsius 0 sampai 100, Reamur 0 sampai 80, Fahrenheit 32 sampai 212, Kelvin 273 sampai 373. Geser Celsius, tiga skala lain ikut naik dengan porsi yang sama.`,
+q:`Air 37 °C dinyatakan dalam Kelvin, Fahrenheit, dan Reamur menjadi? A. 98,6 K; 300 °F; 29,6 °R B. 310 K; 98,6 °F; 29,6 °R C. 310 K; 29,6 °F; 98,6 °R D. 29,60 K; 98,6 °F; 29,6 °R`,
+c:G(4,130)+C('p4','Suhu air (°C)',0,100,1,37)+`<div class="row">${BT('p4s','Pakai angka soal (37 °C)')}</div>`+O('p4o'),
+a:`Jawaban <b>B</b>: 310 K, 98,6 °F, 29,6 °R.`,
+r:`K = °C + 273 = 37 + 273 = 310 K\n°F = (9/5 × °C) + 32 = 66,6 + 32 = 98,6 °F\n°R = 4/5 × °C = 0,8 × 37 = 29,6 °R\nCek cepat: 37 °C itu suhu tubuh, dan suhu tubuh dalam °F memang 98,6.\nJebakan: lupa tambah 32, atau tertukar 4/5 dengan 5/4.`},
+{n:7,t:`Bimetal kuningan dan baja`,tag:`Pemuaian, OSN Provinsi 2025 isian no. 25 (gambar pilihan tidak ada di PDF, kunci sumber: X = C, Y = B)`,
+k:`Dua logam yang ditempel melengkung karena memuai tidak sama besar. Saat dipanaskan, kuningan (lebih mudah memuai) jadi lebih panjang dan ada di sisi luar, jadi keping melengkung ke arah baja. Saat didinginkan kebalikannya: kuningan menyusut lebih besar, keping melengkung ke arah kuningan.`,
+q:`Kuningan dan baja disatukan jadi bimetal, lalu suhunya diubah sama besar. Kuningan lebih mudah memuai daripada baja. Peristiwa pendinginan ditunjukkan huruf ...(X)... dan pemanasan huruf ...(Y)...`,
+c:G(7,130)+C('p7','Suhu keping (°C), normal dianggap 30',5,55,5,55)+O('p7o'),
+a:`Pendinginan <b>C</b>, pemanasan <b>B</b> (kunci dari sumber soal). Cocokkan dengan gambar aslinya: yang dipanaskan melengkung ke arah baja, yang didinginkan melengkung ke arah kuningan.`,
+r:`1. Kuningan lebih mudah memuai, jadi perubahan panjangnya lebih besar.\n2. Dipanaskan: kuningan lebih panjang, di luar lengkungan, keping membengkok ke baja.\n3. Didinginkan: kuningan lebih pendek, di dalam lengkungan, keping membengkok ke kuningan.\nAturan: logam yang berubah lebih besar selalu di sisi luar saat memuai dan di sisi dalam saat menyusut.`},
+{n:8,t:`Ketel listrik: usaha dan suhu awal air`,tag:`Usaha dan kalor, OSN Semifinal 2025 uraian no. 2e–f`,
+k:`Energi listrik ketel berubah jadi kalor yang diserap air. Dua rumus nyambung di sini: W = P × t di sisi listrik, Q = m × c × ΔT di sisi air. Waktu harus dalam detik.`,
+q:`Ketel 1120 W mendidihkan 1 liter air dalam 5 menit. e) Berapa usaha yang dibutuhkan? f) Kalau semua usaha jadi kalor air, berapa suhu awal air? (massa jenis air 1 kg/L, kalor jenis air 4200 J/kg °C)`,
+c:G(8,100)+C('p8','Daya ketel P (W)',500,3000,20,1120)+C('p8b','Lama pemanasan (menit)',1,10,1,5)+`<div class="row">${BT('p8s','Pakai angka soal (1120 W, 5 menit)')}</div>`+O('p8o'),
+a:`e) usaha = <b>336.000 J</b> (336 kJ). f) suhu awal air = <b>20 °C</b>.`,
+r:`e) t = 5 × 60 = 300 s\n   W = P × t = 1120 × 300 = 336.000 J\nf) m = ρ × V = 1 × 1 = 1 kg\n   Q = W = 336.000 J, suhu akhir 100 °C (mendidih)\n   336.000 = 1 × 4200 × ΔT\n   ΔT = 336.000 ÷ 4200 = 80 °C\n   T awal = 100 − 80 = 20 °C\nCek: 1 × 4200 × 80 = 336.000\nJebakan: lupa ubah menit ke detik, hasil meleset 60 kali.`},
+{n:10,t:`Membuat skala termometer sendiri`,tag:`Skala suhu, OSN SD/MI 2024 no. 47`,
+k:`Dua pasang data cukup untuk menghubungkan dua skala karena hubungannya garis lurus. Cari dulu kemiringannya (berapa °X naik tiap 1 °C), lalu cari titik awalnya.`,
+q:`Data: 20 °C = 20 °X dan 40 °C = 60 °X. Titik beku dan titik didih skala X? A. 0 °X dan 100 °X B. 0 °X dan 200 °X C. −20 °X dan 180 °X D. −20 °X dan 200 °X`,
+c:G(10,135)+C('p10','Suhu Celsius (°C)',0,100,5,40)+`<div class="row">${BT('p10a','Titik beku (0 °C)')}${BT('p10b','Titik didih (100 °C)')}</div>`+O('p10o'),
+a:`Jawaban <b>C</b>: titik beku −20 °X, titik didih 180 °X.`,
+r:`Kemiringan = (60 − 20) ÷ (40 − 20) = 40 ÷ 20 = 2\nX = 2C + b. Titik (20, 20): 20 = 2(20) + b, jadi b = −20\nRumus skala: X = 2C − 20\nTitik beku (C = 0): X = −20 °X\nTitik didih (C = 100): X = 200 − 20 = 180 °X\nCek titik kedua: 2(40) − 20 = 60`},
+{n:11,t:`Campuran tiga wadah air`,tag:`Kesetimbangan termal, OSN SD/MI 2024 no. 48`,
+k:`Kalau volume dan jenis airnya sama, suhu campuran adalah rata-rata dua suhu. Dari tiga rata-rata yang diketahui, kita bisa mundur dan menemukan suhu awal tiap wadah.`,
+q:`Air di P, Q, R volumenya sama. Campuran P dan Q: 20 °C. Campuran P dan R: 25 °C. Campuran Q dan R: 15 °C. Urutan air dari suhu tertinggi ke terendah? A. P, R, Q B. P, Q, R C. Q, R, P D. R, Q, P`,
+c:G(11,125)+C('p11','Suhu air P (°C)',0,60,5,30)+C('p11b','Suhu air Q (°C)',0,60,5,10)+C('p11c','Suhu air R (°C)',0,60,5,20)+`<div class="row">${BT('p11s','Pakai angka soal')}</div>`+O('p11o'),
+a:`P = 30 °C, R = 20 °C, Q = 10 °C. Urutannya <b>P, R, Q</b> (A).`,
+r:`Rata-rata dua suhu = suhu campuran, jadi jumlah dua suhu = 2 × campuran\nP + Q = 40\nP + R = 50\nQ + R = 30\nJumlahkan semua: 2(P + Q + R) = 120, jadi P + Q + R = 60\nR = 60 − 40 = 20\nQ = 60 − 50 = 10\nP = 60 − 30 = 30\nUrutan: P (30) > R (20) > Q (10)`},
+{n:16,t:`Besi terasa lebih dingin dari kayu`,tag:`Konduktivitas, OSN SD/MI 2023 no. 55`,
+k:`Yang kita rasakan bukan suhu bendanya, tapi seberapa cepat kalor keluar dari tangan. Besi menghantar kalor jauh lebih cepat, jadi tangan cepat kehilangan kalor dan terasa dingin.`,
+q:`Kayu: konduktivitas 0,2 W/m·K, kalor jenis 1700 J/kg·K. Besi: 80 W/m·K, 460 J/kg·K. Pada 20 °C besi terasa lebih dingin. Alasan yang tepat? A. kayu kalor jenisnya lebih besar B. besi konduktivitasnya lebih besar C. kalor mengalir tanpa dipengaruhi konduktivitas dan kalor jenis D. besi permukaannya lebih halus`,
+c:G(16,100)+C('p16','Lama tangan menempel (detik)',0,10,1,5)+O('p16o'),
+a:`Jawaban <b>B</b>. Konduktivitas besi 80 W/m·K, kayu 0,2 W/m·K. Besi 400 kali lebih cepat menghantar kalor dari tangan.`,
+r:`1. Tangan lebih hangat dari 20 °C, jadi kalor mengalir dari tangan ke benda.\n2. Makin besar konduktivitas, makin cepat kalor lepas dari tangan.\n3. 80 ÷ 0,2 = 400, besi menarik kalor 400 kali lebih cepat.\nBukan A: kalor jenis besar justru membuat benda susah berubah suhu.\nBukan D: halus atau kasar tidak menentukan konduktivitas.\nGambar memakai model sederhana: kalor lepas sebanding dengan konduktivitas × waktu.`},
+{n:22,t:`Arah gerak air saat dipanaskan`,tag:`Perpindahan kalor, OSN SD/MI 2023 no. 39 (gambar pilihan tidak ada di PDF)`,
+k:`Air yang dipanaskan bergerak melingkar. Air dekat api memanas, jadi lebih ringan dan naik. Air dingin yang lebih berat turun mengisi tempatnya. Zatnya yang bergerak membawa panas, jadi ini konveksi, bukan konduksi.`,
+q:`Wadah berisi air dipanaskan. Arah gerak air dan jenis perpindahan panas yang tepat? Pilihan A dan B menyebut konduksi, C dan D konveksi, beda di arah panah pada gambar.`,
+c:G(22,150)+C('p22','Besar api',0,5,1,3)+O('p22o'),
+a:`Jenisnya <b>konveksi</b>, jadi jawabannya C atau D. Pilih yang panahnya naik di atas api dan turun di sisi yang jauh dari api. Huruf pastinya tergantung gambar asli.`,
+r:`1. Air bergerak, bukan diam, jadi bukan konduksi.\n2. Dekat api: air memuai, massa jenis turun, naik.\n3. Jauh dari api: air lebih dingin dan berat, turun.\n4. Terbentuk aliran melingkar yang membawa panas ke seluruh air.`},
+{n:24,t:`Suhu saat mendidih dan mencair`,tag:`Perubahan wujud, OSN SD/MI 2021 Set 1 no. 63 dan KSN Set 2 no. 63`,
+k:`Selama zat berubah wujud, suhunya tidak naik dan tidak turun. Kalor dipakai untuk mengubah wujud. Berlaku untuk air mendidih di 100 °C dan es mencair di 0 °C.`,
+q:`Soal 24: Budi memanaskan air sampai mendidih di 100 °C dan mengamati 2 menit. Soal 27: Arkan mencairkan es di 0 °C dan mengamati 1 menit. Suhu yang terbaca selama itu? A. naik B. tetap sama C. naik lalu tetap D. naik lalu turun`,
+c:G(24,135)+C('p24','Waktu pemanasan (menit)',0,10,1,7)+`<div class="row">${BT('p24a','Air mendidih (soal 24)',1)}${BT('p24b','Es mencair (soal 27)')}</div>`+O('p24o'),
+a:`Keduanya <b>B. tetap sama</b>: air mendidih tetap 100 °C, es mencair tetap 0 °C.`,
+r:`Air mendidih: kalor dipakai menguap (cair jadi gas), suhu tetap 100 °C\nEs mencair: kalor dipakai melebur (padat jadi cair), suhu tetap 0 °C\nPolanya sama, jadi jawabannya sama.\nJebakan: mengira dipanasi terus berarti suhu naik terus.`},
+{n:38,t:`Piringan berlubang dipanaskan`,tag:`Pemuaian, OSN SD/MI 2021 no. 55 (gambar pilihan tidak ada di PDF)`,
+k:`Logam yang memuai membesar ke segala arah, seperti foto yang di-zoom. Jadi lubang di tengahnya ikut membesar, bukan mengecil. Bayangkan lubang itu juga berlapis logam yang ikut memuai.`,
+q:`Jika piringan logam berongga dipanaskan, pemuaian yang mungkin terjadi ditunjukkan oleh ... (pilihan A sampai D berupa gambar).`,
+c:G(38,140)+C('p38','Kenaikan suhu (°C)',0,300,25,150)+O('p38o'),
+a:`Pilih gambar di mana diameter luar <b>dan</b> diameter lubang sama-sama lebih besar dari semula. Huruf pastinya tergantung gambar asli.`,
+r:`1. Pemuaian panjang: L = L0 × (1 + α × ΔT), berlaku ke semua ukuran.\n2. Diameter luar dan diameter lubang sama-sama dikali faktor yang sama.\n3. Jadi lubang membesar.\nJebakan: mengira logam memuai ke dalam sehingga lubang menyempit.`}
+];
+const nv=$('nv'),ms=$('ms');
+S.forEach(s=>{nv.insertAdjacentHTML('beforeend',`<a data-n="${s.n}">${s.n}</a>`);
+ms.insertAdjacentHTML('beforeend',`<section id="s${s.n}" data-n="${s.n}"><h2>Soal ${s.n}: ${s.t}</h2><p class="tag">${s.tag}</p><div class="k">${s.k}</div><div class="q"><b>Soal</b>${s.q}</div>${s.c}<details><summary>Lihat jawaban</summary><p>${s.a}</p></details><details><summary>Langkah mengerjakan</summary><div class="fm">${s.r}</div></details></section>`)});
+const ST='stroke="var(--yel)" stroke-width="2" fill="none"';
+/* kalor bertahap: soal 1 dan 36 */
+function heat(id,m,T0){const n=id.slice(1),Q1=m*.5*-T0,Q2=Q1+m*80,Q3=Q2+m*100,px=q=>30+q/Q3*280,py=t=>115-(t-T0)/(100-T0)*100;
+bind(id,q=>{const T=q<=Q1?T0+q/(m*.5):q<=Q2?0:(q-Q2)/m,a=Math.min(q,Q1),b=Math.min(Math.max(q-Q1,0),Q2-Q1),c=Math.max(q-Q2,0);
+let p=`M${px(0)} ${py(T0)}`;[[Q1,0],[Q2,0]].forEach(([x,y])=>{if(q>x)p+=`L${px(x)} ${py(y)}`});p+=`L${px(q)} ${py(T)}`;
+$('a'+n).innerHTML=`<path d="M30 12V115H312" class="ln" style="stroke-width:1"/><path d="M${px(0)} ${py(T0)}L${px(Q1)} ${py(0)}L${px(Q2)} ${py(0)}L${px(Q3)} ${py(100)}" stroke="var(--mut)" stroke-width="2" stroke-dasharray="4 3" fill="none"/><path d="${p}" stroke="var(--blue)" stroke-width="3" fill="none"/><circle cx="${px(q)}" cy="${py(T)}" r="6" fill="var(--red)" stroke="var(--line)" stroke-width="2"/><text x="2" y="${py(0)+4}">0°</text><text x="2" y="${py(100)+4}">100°</text><text x="2" y="${py(T0)+4}">${T0}°</text><text x="${(px(Q1)+px(Q2))/2}" y="${py(0)-7}" text-anchor="middle">melebur</text><text x="262" y="132">Q (kal)</text>`;
+const s=q<Q1?'es memanas':q<Q2?'es melebur, suhu datar di 0 °C':q==Q2?'semua es baru jadi air 0 °C':'air memanas';
+$(id+'o').innerHTML=`Kalor total ${F(q)} kal<br>Tahap 1 (es naik): ${F(a)} | Tahap 2 (melebur): ${F(b)} | Tahap 3 (air naik): ${F(c)}<br>Sisa setelah tahap 1: ${F(q-a)}, setelah tahap 2: ${F(q-a-b)}<br><b>${s}, suhu ${N(T)} °C</b>`})}
+heat('p1',1000,-20);
+/* 4 */
+bind('p4',c=>{const k=c+273,f=c*9/5+32,r=c*.8,v=[[c,'°C'],[k,'K'],[f,'°F'],[r,'°R']];
+$('a4').innerHTML=v.map(([x,l],i)=>`<rect x="${30+i*75}" y="15" width="34" height="80" rx="4" fill="none" class="ln"/><rect x="${30+i*75}" y="${95-80*c/100}" width="34" height="${80*c/100}" rx="4" fill="var(--red)" opacity=".8"/><text x="${47+i*75}" y="109" text-anchor="middle">${N(x)}</text><text x="${47+i*75}" y="123" text-anchor="middle">${l}</text>`).join('');
+$('p4o').innerHTML=`K = ${c} + 273 = <b>${N(k)} K</b><br>°F = 9/5 × ${c} + 32 = <b>${N(f)} °F</b><br>°R = 4/5 × ${c} = <b>${N(r)} °R</b><br>Tiap batang terisi dari titik beku ke titik didih air, makanya tingginya sama.`});
+$('p4s').onclick=()=>set('p4',37);
+/* 8 */
+{const u=()=>{const P=+$('p8r').value,t=+$('p8br').value,W=P*t*60,d=W/4200,T=100-d,x=v=>20+v*2.8,a=Math.max(0,T);
+$('a8').innerHTML=`<path d="M20 70H300" class="ln"/><rect x="${x(a)}" y="45" width="${x(100)-x(a)}" height="20" fill="var(--yel)" stroke="var(--line)" stroke-width="2"/><text x="${(x(a)+x(100))/2}" y="38" text-anchor="middle">naik ${N(d)} °C</text><text x="${x(a)}" y="86" text-anchor="middle">T awal</text><text x="300" y="86" text-anchor="end">100 °C</text><text x="20" y="98">0 °C</text>`;
+$('p8o').innerHTML=`W = P × t = ${P} × ${t*60} = <b>${F(W)} J</b><br>ΔT = ${F(W)} ÷ (1 × 4200) = ${N(d)} °C<br>T awal = 100 − ${N(d)} = <b>${N(T)} °C</b>${T<0?'<br>Di bawah 0 °C berarti air beku, tidak cocok untuk soal ini.':''}`};
+bind('p8',u);bind('p8b',u);$('p8s').onclick=()=>{set('p8',1120);set('p8b',5)}}
+/* 10 */
+{const px=c=>40+c*2.6,py=x=>115-(x+20)*.5,u=()=>{const c=+$('p10r').value,x=2*c-20;
+$('a10').innerHTML=`<path d="M40 15V115H300" class="ln" style="stroke-width:1"/><path d="M${px(0)} ${py(-20)}L${px(100)} ${py(180)}" stroke="var(--blue)" stroke-width="3"/>`+[[20,20],[40,60]].map(([a,b])=>`<circle cx="${px(a)}" cy="${py(b)}" r="4" fill="var(--grn)"/><text x="${px(a)+6}" y="${py(b)+14}" style="font-size:9px">${a}°C = ${b}°X</text>`).join('')+`<path d="M${px(c)} 115V${py(x)}H40" stroke="var(--mut)" stroke-dasharray="3 3" fill="none"/><circle cx="${px(c)}" cy="${py(x)}" r="6" fill="var(--red)" stroke="var(--line)" stroke-width="2"/><text x="44" y="12">°X</text><text x="272" y="130">°C</text>`;
+$('p10o').innerHTML=`X = 2C − 20 = 2 × ${c} − 20 = <b>${x} °X</b>${c==0?' (titik beku)':c==100?' (titik didih)':''}<br>Kemiringan garis = (60 − 20) ÷ (40 − 20) = 2`};
+bind('p10',u);$('p10a').onclick=()=>set('p10',0);$('p10b').onclick=()=>set('p10',100)}
+/* 11 */
+{const u=()=>{const[P,Q,R]=['p11','p11b','p11c'].map(i=>+$(i+'r').value),m=(a,b)=>(a+b)/2;
+$('a11').innerHTML=`<path d="M30 100H300" class="ln"/>`+[[P,'P'],[Q,'Q'],[R,'R']].map(([v,l],i)=>`<rect x="${50+i*90}" y="${100-v*1.4}" width="40" height="${v*1.4}" fill="var(--red)" stroke="var(--line)" stroke-width="2"/><text x="${70+i*90}" y="${94-v*1.4}" text-anchor="middle">${v}°</text><text x="${70+i*90}" y="116" text-anchor="middle">${l}</text>`).join('');
+$('p11o').innerHTML=`P dan Q: (${P} + ${Q}) ÷ 2 = <b>${N(m(P,Q))} °C</b><br>P dan R: (${P} + ${R}) ÷ 2 = <b>${N(m(P,R))} °C</b><br>Q dan R: (${Q} + ${R}) ÷ 2 = <b>${N(m(Q,R))} °C</b><br>${m(P,Q)==20&&m(P,R)==25&&m(Q,R)==15?'<span class="good">Cocok dengan tabel soal (20, 25, 15).</span>':'Belum cocok dengan tabel soal (20, 25, 15).'}`};
+['p11','p11b','p11c'].forEach(i=>bind(i,u));$('p11s').onclick=()=>{set('p11',30);set('p11b',10);set('p11c',20)}}
+/* 16 */
+bind('p16',t=>{const bar=(k,y,l,c)=>`<text x="8" y="${y-5}">${l} (${N(k)} W/m·K)</text><rect x="8" y="${y}" width="${Math.max(2,k*t/800*300)}" height="16" fill="${c}" stroke="var(--line)" stroke-width="2"/>`;
+$('a16').innerHTML=`<text x="8" y="12" style="font-size:10px">kalor yang lepas dari tangan</text>`+bar(80,34,'Besi','var(--blue)')+bar(.2,78,'Kayu','var(--yel)');
+$('p16o').innerHTML=`Kalor lepas (relatif) = konduktivitas × waktu<br>Besi: 80 × ${t} = <b>${N(80*t)}</b><br>Kayu: 0,2 × ${t} = <b>${N(.2*t)}</b><br>Perbandingan besi : kayu = 80 : 0,2 = <b>400 : 1</b>`});
+/* 24 */
+{let m=0;const cf=[{lo:50,hi:110,T0:60,r:8,p:100,pl:'mendidih 100 °C',st:'air memanas',pn:'air mendidih (menguap)'},{lo:-30,hi:10,T0:-20,r:4,p:0,pl:'mencair 0 °C',st:'es memanas',pn:'es mencair (melebur)'}];
+const u=()=>{const c=cf[m],t=+$('p24r').value,T=Math.min(c.p,c.T0+c.r*t),tp=(c.p-c.T0)/c.r,py=v=>115-(v-c.lo)/(c.hi-c.lo)*100,px=x=>40+x*26;
+$('a24').innerHTML=`<path d="M40 12V115H304" class="ln" style="stroke-width:1"/><path d="M${px(0)} ${py(c.T0)}L${px(tp)} ${py(c.p)}L${px(10)} ${py(c.p)}" stroke="var(--blue)" stroke-width="3" fill="none"/><circle cx="${px(t)}" cy="${py(T)}" r="6" fill="var(--red)" stroke="var(--line)" stroke-width="2"/><text x="${px(tp)+8}" y="${py(c.p)-8}">${c.pl}</text><text x="44" y="12">suhu</text><text x="262" y="130">waktu (menit)</text>`;
+$('p24o').innerHTML=t<tp?`Menit ${t}: ${c.st}, suhu ${N(T)} °C`:`Menit ${t}: ${c.pn}, suhu <b>tetap ${c.p} °C</b>`};
+bind('p24',u);const b=['p24a','p24b'];b.forEach((id,i)=>$(id).onclick=()=>{m=i;b.forEach((x,j)=>$(x).className=j==i?'on':'');u()})}
+/* 7 */
+bind('p7',T=>{const d=(T-30)*.9,s=y=>`M40 ${y}Q160 ${y+2*d} 280 ${y}`;
+$('a7').innerHTML=`<text x="8" y="14" style="font-size:10px">merah = kuningan (muai lebih besar), biru = baja</text><path d="${s(76)}" stroke="var(--red)" stroke-width="10" fill="none"/><path d="${s(66)}" stroke="var(--blue)" stroke-width="10" fill="none"/>`;
+$('p7o').innerHTML=T>30?`Pemanasan (${T} °C): kuningan memuai lebih panjang, di sisi luar. Keping melengkung ke <b>baja</b>.`:T<30?`Pendinginan (${T} °C): kuningan menyusut lebih besar, jadi lebih pendek dan di sisi dalam. Keping melengkung ke <b>kuningan</b>.`:`Suhu normal (30 °C): keping lurus.`});
+/* 22 */
+{let ph=0;bind('p22',h=>{$('p22o').innerHTML=h?`Air dekat api memanas, lebih ringan, naik. Air dingin turun mengisi. Zatnya yang bergerak membawa panas: <b>konveksi</b>.`:`Api mati, air diam, tidak ada aliran.`});
+anims.push(()=>{ph+=+$('p22r').value*.012;let g='<path d="M60 15V125H260V15" class="ln"/><rect x="61" y="40" width="198" height="84" fill="var(--blue)" opacity=".2"/><text x="52" y="146" style="font-size:20px">🔥</text><text x="160" y="22" text-anchor="middle" style="font-size:10px">air</text>';
+for(let i=0;i<14;i++){const t=ph+i*2*PI/14,c=Math.cos(t);g+=`<circle cx="${160-85*c}" cy="${80-35*Math.sin(t)}" r="5" fill="${c>0?'var(--red)':'var(--blue)'}" opacity=".9"/>`}
+$('a22').innerHTML=g})}
+/* 38 */
+bind('p38',d=>{const s=1+d/300*.5,R=50,r=18;
+$('a38').innerHTML=`<circle cx="160" cy="70" r="${R}" fill="none" stroke="var(--mut)" stroke-dasharray="4 3"/><circle cx="160" cy="70" r="${r}" fill="none" stroke="var(--mut)" stroke-dasharray="4 3"/><circle cx="160" cy="70" r="${R*s}" fill="var(--blue)" opacity=".7" stroke="var(--line)" stroke-width="2"/><circle cx="160" cy="70" r="${r*s}" fill="var(--soft)" stroke="var(--line)" stroke-width="2"/><text x="8" y="132" style="font-size:10px">garis putus-putus = ukuran awal (pembesaran digambar berlebihan)</text>`;
+$('p38o').innerHTML=d?`Suhu naik ${d} °C: diameter luar <b>membesar</b> dan diameter lubang juga <b>membesar</b>, dengan faktor yang sama.`:`Belum dipanaskan: ukuran awal.`});
+/* pager */
+const secs=[...document.querySelectorAll('section')],ch=[...nv.children];let cur=0;
+function go(i){cur=Math.max(0,Math.min(secs.length-1,i));secs.forEach((s,k)=>s.classList.toggle('on',k==cur));ch.forEach((a,k)=>a.classList.toggle('on',k==cur));$('pc').textContent=(cur+1)+' / '+secs.length;$('pv').disabled=cur==0;$('nx').disabled=cur==secs.length-1;history.replaceState(null,'','#s'+secs[cur].dataset.n);window.scrollTo(0,0)}
+$('pv').onclick=()=>go(cur-1);$('nx').onclick=()=>go(cur+1);ch.forEach((a,k)=>a.onclick=()=>go(k));
+go(Math.max(0,secs.findIndex(s=>'#s'+s.dataset.n==location.hash)));
+</script></body></html>
